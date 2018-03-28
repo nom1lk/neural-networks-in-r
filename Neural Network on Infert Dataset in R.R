@@ -10,6 +10,8 @@ library(dplyr)
 # Usually you have 2 hidden layers, and you could have number of nodes in the hidden layer
 # Activation function by default is logistic, but can be set to others
 # see ?neuralnet for more info about the parameters you can set
+# note that occasionally a neural net will fail to converge, resulting in an error - totally depends on the seed etc
+# A higher learning rate will result in faster convergence
 
 
 
@@ -44,8 +46,16 @@ mean(infert$case == binary_predictions)
 # it's correct 76.6% of the time
 
 
-# Making predictions for new data
+#----- Making predictions for new data -----#
+# here the new data is input as a matrix (we have 4 new observations to predict for; all aged 22. First one is )
+four_new_observations <- matrix(c(22,1,0,0,
+                                  22,1,1,0,
+                                  22,1,0,1,
+                                  22,1,1,1), 
+                                byrow=TRUE, ncol = 4)
 
+new.output <- neuralnet::compute(nn, covariate=four_new_observations)
+new.output$net.result
 
 
 
